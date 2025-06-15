@@ -31,7 +31,7 @@ joblib.dump(X.columns.tolist(), 'columnas_modelo.pkl')
 joblib.dump(scaler, 'escalador.pkl')
 
 #Modelo 1
-logistic_model = LogisticRegression(max_iter=1000) # class_weight='balanced'
+logistic_model = LogisticRegression(max_iter=1000, class_weight='balanced', random_state=42)
 logistic_model.fit(X_train, y_train)
 
 # Evaluar el modelo
