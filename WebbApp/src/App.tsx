@@ -9,6 +9,8 @@ import { fieldOptions, fieldDescriptions } from './data/fieldOptions';
 import { predictAttrition } from './utils/predictAttrition';
 
 function App() {
+  const [selectedModel, setSelectedModel] = useState<'logistic' | 'xgboost'>('logistic');
+
   const [formData, setFormData] = useState<EmployeeData>(getInitialEmployeeData());
   const [prediction, setPrediction] = useState<{
     prediccion: 'Yes' | 'No';
@@ -31,7 +33,7 @@ function App() {
     setError(null);
 
     try {
-      const predictionFetch = await predictAttrition(formData);
+      const predictionFetch = await predictAttrition({ ...formData, modelo: selectedModel });
       console.log('Prediction response:', predictionFetch);
       setPrediction(predictionFetch);
     } catch (error) {
@@ -374,6 +376,34 @@ function App() {
 
           {/* Action Buttons */}
           {error && <div className='text-red-600 text-center'>{error}</div>}
+
+          <FormSection title='Modelo de Predicción'>
+            <div className='flex flex-col sm:flex-row gap-4'>
+              <label className='flex items-center gap-2'>
+                <input
+                  type='radio'
+                  name='modelo'
+                  value='logistic'
+                  checked={selectedModel === 'logistic'}
+                  onChange={() => setSelectedModel('logistic')}
+                  className='accent-blue-600'
+                />
+                Regresión Logística
+              </label>
+              <label className='flex items-center gap-2'>
+                <input
+                  type='radio'
+                  name='modelo'
+                  value='xgboost'
+                  checked={selectedModel === 'xgboost'}
+                  onChange={() => setSelectedModel('xgboost')}
+                  className='accent-blue-600'
+                />
+                XGBoost
+              </label>
+            </div>
+          </FormSection>
+
           <div className='flex flex-col sm:flex-row gap-4 justify-center'>
             <button
               type='submit'
