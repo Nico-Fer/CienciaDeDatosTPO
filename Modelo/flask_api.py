@@ -44,7 +44,7 @@ def predict():
         return jsonify({
             'modelo_usado': modelo_seleccionado,
             'probabilidad_renuncia': round(float(proba), 4),
-            'prediccion': 'Yes' if proba > 0.5 else 'No'
+            'prediccion': 'Yes' if proba > 0.5 else 'No',
         })
     
     except Exception as e:

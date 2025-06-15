@@ -21,10 +21,24 @@ function App() {
   const [error, setError] = useState<string | null>(null);
 
   const handleFieldChange = (name: string, value: string | number) => {
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === 'MonthlyIncome' && typeof value === 'number') {
+      const monthlyIncome = value;
+      const hourlyRate = Math.round(monthlyIncome / 160);
+      const dailyRate = Math.round(monthlyIncome / 22);
+
+      setFormData(prev => ({
+        ...prev,
+        MonthlyIncome: monthlyIncome,
+        HourlyRate: hourlyRate,
+        DailyRate: dailyRate,
+        MonthlyRate: monthlyIncome,
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -250,27 +264,24 @@ function App() {
               type='number'
               value={formData.HourlyRate}
               onChange={handleFieldChange}
-              min={0}
-              required
             />
+
             <FormField
               label='Tarifa Diaria'
               name='DailyRate'
               type='number'
               value={formData.DailyRate}
               onChange={handleFieldChange}
-              min={0}
-              required
             />
+
             <FormField
               label='Tarifa Mensual'
               name='MonthlyRate'
               type='number'
               value={formData.MonthlyRate}
               onChange={handleFieldChange}
-              min={0}
-              required
             />
+
             <FormField
               label='Incremento Salarial (%)'
               name='PercentSalaryHike'

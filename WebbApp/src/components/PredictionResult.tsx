@@ -9,7 +9,9 @@ interface PredictionResultProps {
 export const PredictionResult: React.FC<PredictionResultProps> = ({ prediction, confidence }) => {
   if (!prediction) return null;
 
-  const isStaying = prediction === 'No';
+  const isStaying = prediction == 'No';
+
+  // console.log(`Predicción: ${prediction}, Confianza: ${confidence}`);
 
   return (
     <div
@@ -28,9 +30,12 @@ export const PredictionResult: React.FC<PredictionResultProps> = ({ prediction, 
             Predicción: Se va a {isStaying ? 'quedar' : 'ir'}
           </h3>
           {confidence && (
-            <p className={`text-sm ${isStaying ? 'text-green-700' : 'text-red-700'}`}>
-              Confianza: {(confidence * 100).toFixed(1)}%
-            </p>
+            <>
+              <p className='text-green-700'>
+                Probabilidad de No Renuncia: {(100 - confidence * 100).toFixed(2)}%
+              </p>
+              <p className='text-red-700'>Probabilidad de Renuncia: {(confidence * 100).toFixed(2)}%</p>
+            </>
           )}
         </div>
       </div>
